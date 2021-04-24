@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +14,9 @@ public class GameManager : MonoBehaviour
     public static Vector2 bottomLeft;
     public static Vector2 topRight;
     public static Vector2 screenSize;
+
+    public Color rPadColor = Color.red;
+    public Color lPadColor = Color.white;
 
     CameraMovement cameraMovement;
     GameObject paddleObject1;
@@ -41,8 +46,8 @@ public class GameManager : MonoBehaviour
     {
         Paddle paddle1 = Instantiate(paddle) as Paddle;
         Paddle paddle2 = Instantiate(paddle) as Paddle;
-        paddle1.Init(true, false); // Right paddle
-        paddle2.Init(false, false); // Left paddle
+        paddle1.Init(true, false, "white"); // Right paddle
+        paddle2.Init(false, false, "white"); // Left paddle
 
         TopBarrier topBarrier1 = Instantiate(topBarrier, new Vector3(0, topRight.y), Quaternion.identity) as TopBarrier;
         TopBarrier topBarrier2 = Instantiate(topBarrier, new Vector3(0, bottomLeft.y), Quaternion.identity) as TopBarrier;
@@ -69,9 +74,9 @@ public class GameManager : MonoBehaviour
         SideBarrier sceneBarrier3 = Instantiate(sideBarrier, new Vector2(bottomLeft.x, screenSize.y), Quaternion.identity) as SideBarrier;
 
         Paddle scenePaddle1 = Instantiate(paddle, paddlePosition1, Quaternion.identity) as Paddle;
-        scenePaddle1.Init(true, true); // Right paddle
+        scenePaddle1.Init(true, true, "white"); // Right paddle
         Paddle scenePaddle2 = Instantiate(paddle, paddlePosition2, Quaternion.identity) as Paddle;
-        scenePaddle2.Init(false, true); // Left paddle
+        scenePaddle2.Init(false, true, "white"); // Left paddle
 
         sceneBarrier1.tag = "Scene Clone";
         sceneBarrier2.tag = "Scene Clone";
@@ -97,9 +102,9 @@ public class GameManager : MonoBehaviour
         SideBarrier sceneBarrier3 = Instantiate(sideBarrier, new Vector2(bottomLeft.x, 0 - screenSize.y), Quaternion.identity) as SideBarrier;
 
         Paddle scenePaddle1 = Instantiate(paddle, paddlePosition1, Quaternion.identity) as Paddle;
-        scenePaddle1.Init(true, false); // Right paddle
+        scenePaddle1.Init(true, true, "white"); // Right paddle
         Paddle scenePaddle2 = Instantiate(paddle, paddlePosition2, Quaternion.identity) as Paddle;
-        scenePaddle2.Init(false, true); // Left paddle
+        scenePaddle2.Init(false, true, "white"); // Left paddle
 
         sceneBarrier1.tag = "Scene Clone";
         sceneBarrier2.tag = "Scene Clone";
@@ -107,11 +112,21 @@ public class GameManager : MonoBehaviour
         scenePaddle1.tag = "Scene Clone";
         scenePaddle2.tag = "Scene Clone";
 
+
         cameraMovement.MoveDown();
     }
 
-    public void RightBarriers()
+    public void RightBarriers(string setColor)
     {
+        if (setColor == "white")
+        {
+            lPadColor = Color.white;
+            rPadColor = Color.white;
+        }
+        else if (setColor == "red")
+        {
+            rPadColor = Color.red;
+        }
         paddleObject1 = GameObject.Find("PaddleRight");
         paddlePosition1 = paddleObject1.transform.position;
         paddlePosition1.x = paddlePosition1.x + screenSize.x;
@@ -125,9 +140,9 @@ public class GameManager : MonoBehaviour
         SideBarrier sceneBarrier3 = Instantiate(sideBarrier, new Vector2((topRight.x + screenSize.x), 0), Quaternion.identity) as SideBarrier;
 
         Paddle scenePaddle1 = Instantiate(paddle, paddlePosition1, Quaternion.identity) as Paddle;
-        scenePaddle1.Init(true, true); // Right paddle
+        scenePaddle1.Init(true, true, "white"); // Right paddle
         Paddle scenePaddle2 = Instantiate(paddle, paddlePosition2, Quaternion.identity) as Paddle;
-        scenePaddle2.Init(false, true); // Left paddle
+        scenePaddle2.Init(false, true, "white"); // Left paddle
 
         sceneBarrier1.tag = "Scene Clone";
         sceneBarrier2.tag = "Scene Clone";
@@ -138,8 +153,17 @@ public class GameManager : MonoBehaviour
         cameraMovement.MoveRight();
     }
 
-    public void LeftBarriers()
+    public void LeftBarriers(string setColor)
     {
+        if (setColor == "white")
+        {
+            lPadColor = Color.white;
+            rPadColor = Color.white;
+        }
+        else if (setColor == "red")
+        {
+            lPadColor = Color.red;
+        }
         paddleObject1 = GameObject.Find("PaddleRight");
         paddlePosition1 = paddleObject1.transform.position;
         paddlePosition1.x = paddlePosition1.x - screenSize.x;
@@ -153,9 +177,9 @@ public class GameManager : MonoBehaviour
         SideBarrier sceneBarrier3 = Instantiate(sideBarrier, new Vector2((bottomLeft.x - screenSize.x), 0), Quaternion.identity) as SideBarrier;
 
         Paddle scenePaddle1 = Instantiate(paddle, paddlePosition1, Quaternion.identity) as Paddle;
-        scenePaddle1.Init(true, true); // Right paddle
+        scenePaddle1.Init(true, true, "white"); // Right paddle
         Paddle scenePaddle2 = Instantiate(paddle, paddlePosition2, Quaternion.identity) as Paddle;
-        scenePaddle2.Init(false, true); // Left paddle
+        scenePaddle2.Init(false, true, "white"); // Left paddle
 
         sceneBarrier1.tag = "Scene Clone";
         sceneBarrier2.tag = "Scene Clone";
@@ -171,7 +195,6 @@ public class GameManager : MonoBehaviour
         sceneObjects = GameObject.FindGameObjectsWithTag("Scene Clone");
         for (int objNum = 4;  objNum >= 0; objNum--)
         {
-            Debug.Log("Destroy");
             Destroy (sceneObjects[objNum]);
         }
     }
@@ -180,11 +203,11 @@ public class GameManager : MonoBehaviour
     {
         if (player == "Left Player Wins")
         {
-            Debug.Log("Left Player Wins");
+            UnityEngine.Debug.Log("Left Player Wins");
         }
         else
         {
-            Debug.Log("Right Player Wins");
+            UnityEngine.Debug.Log("Right Player Wins");
         }
         Time.timeScale = 0;
     }

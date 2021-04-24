@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 2088743318}
   - component: {fileID: 2088743317}
   m_Layer: 0
-  m_Name: Horizontal Midpoint Collider
+  m_Name: Vertical Midpoint Collider
   m_TagString: Vertical Collider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

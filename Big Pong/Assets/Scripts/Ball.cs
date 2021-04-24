@@ -104,9 +104,13 @@ public class Ball : MonoBehaviour
                 {
                     gameManager.GameEnd("Left Player Wins");
                 }
+                else if (stagePosition == 5)
+                {
+                    gameManager.RightBarriers("red");
+                }
                 else
                 {
-                    gameManager.RightBarriers();
+                    gameManager.RightBarriers("white");
                 }
             }
 
@@ -118,9 +122,13 @@ public class Ball : MonoBehaviour
                 {
                     gameManager.GameEnd("Right Player Wins");
                 }
+                else if (stagePosition == 1)
+                {
+                    gameManager.LeftBarriers("red");
+                }
                 else
                 {
-                    gameManager.LeftBarriers();
+                    gameManager.LeftBarriers("white");
                 }
             }
         }
