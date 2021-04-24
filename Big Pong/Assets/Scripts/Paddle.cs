@@ -68,7 +68,20 @@ public class Paddle : MonoBehaviour
             spriteRenderer.color = Color.white;
         }
 
-        else if (color == "red")
+        else if (paddleColor == "red")
+        {
+            spriteRenderer.color = Color.red;
+        }
+    }
+
+    public void ColorChange(string colorChoice)
+    {
+        if (colorChoice == "white")
+        {
+            spriteRenderer.color = Color.white;
+        }
+
+        else if (colorChoice == "red")
         {
             spriteRenderer.color = Color.red;
         }
