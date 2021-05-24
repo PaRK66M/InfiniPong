@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour
 
     GameManager gameManager;
     CameraMovement cameraMove;
+    ScoreMovement scoreMovement;
 
     Vector2 topRight;
     Vector2 bottomLeft;
@@ -43,6 +44,7 @@ public class Ball : MonoBehaviour
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         cameraMove = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>();
+        scoreMovement = GameObject.FindGameObjectWithTag("UIScore").GetComponent<ScoreMovement>();
 
         cameraMove.FindBall();
     }
@@ -58,7 +60,7 @@ public class Ball : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Paddle")
+        if (other.tag == "Paddle" && screenPause == false)
         {
             bool isRightPaddle = other.GetComponent<Paddle>().isRightPaddle;
 
@@ -102,33 +104,38 @@ public class Ball : MonoBehaviour
                 stagePosition++;
                 if (stagePosition == 6)
                 {
-                    gameManager.GameEnd("Left Player Wins");
+                    gameManager.GameEnd("left");
                 }
                 else if (stagePosition == 5)
                 {
                     gameManager.RightBarriers("red");
+                    scoreMovement.MoveRight("red");
                 }
                 else
                 {
                     gameManager.RightBarriers("white");
+                    scoreMovement.MoveRight("white");
                 }
             }
 
             else if (isRightBarrier == false && isHorizontalShift == false)
             {
+                UnityEngine.Debug.Log("Left shift");
                 isHorizontalShift = true;
                 stagePosition--;
                 if (stagePosition == 0)
                 {
-                    gameManager.GameEnd("Right Player Wins");
+                    gameManager.GameEnd("right");
                 }
                 else if (stagePosition == 1)
                 {
                     gameManager.LeftBarriers("red");
+                    scoreMovement.MoveLeft("red");
                 }
                 else
                 {
                     gameManager.LeftBarriers("white");
+                    scoreMovement.MoveLeft("white");
                 }
             }
         }
@@ -169,5 +176,10 @@ public class Ball : MonoBehaviour
     public bool IsScreenPaused()
     {
         return screenPause;
+    }
+
+    public void DirectionUpdate(float xDir) 
+    {
+        direction.x = xDir;
     }
 }

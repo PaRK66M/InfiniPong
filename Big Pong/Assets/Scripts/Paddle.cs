@@ -87,7 +87,7 @@ public class Paddle : MonoBehaviour
         }
     }
 
-    // Update is called once per fram
+    // Update is called once per frame
     void Update()
     {
         bool isScreenPaused = ball.IsScreenPaused();

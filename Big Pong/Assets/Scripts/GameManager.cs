@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public string lPadColor = "white";
 
     CameraMovement cameraMovement;
+    UIManager uiManager;
+
     GameObject paddleObject1;
     Vector3 paddlePosition1;
     GameObject paddleObject2;
@@ -33,16 +35,46 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         cameraMovement = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>();
+        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
 
         // Convert screen's pixel coordinate into game's coordinate
         bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
         topRight = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         screenSize = new Vector2((topRight.x - bottomLeft.x), (topRight.y - bottomLeft.y));
 
+        GameStart();
+    }
+
+    public void GameStart()
+    {
         // Create Ball
-        Ball ball1 = Instantiate (ball) as Ball;
+        Ball ball1 = Instantiate(ball) as Ball;
 
         NormalBarriers();
+    }
+
+    public void GameRestart()
+    {
+        sceneObjects = GameObject.FindGameObjectsWithTag("Side Barrier");
+        for (int objNum = 1; objNum >= 0; objNum--)
+        {
+            Destroy(sceneObjects[objNum]);
+        }
+        sceneObjects = GameObject.FindGameObjectsWithTag("Vertical Barrier");
+        for (int objNum = 1; objNum >= 0; objNum--)
+        {
+            Destroy(sceneObjects[objNum]);
+        }
+        sceneObjects = GameObject.FindGameObjectsWithTag("Scene Clone");
+        if (sceneObjects.Length > 0)
+        {
+            DestroyBarriers();
+        }
+
+        lPadColor = "white";
+        rPadColor = "white";
+
+        GameStart();
     }
 
     public void NormalBarriers()
@@ -220,16 +252,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameEnd(string player)
+    public void GameEnd(string winner)
     {
-        if (player == "Left Player Wins")
-        {
-            UnityEngine.Debug.Log("Left Player Wins");
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Right Player Wins");
-        }
-        Time.timeScale = 0;
+        GameObject gameBall = GameObject.Find("Ball");
+        GameObject paddleObject1 = GameObject.Find("PaddleRight");
+        GameObject paddleObject2 = GameObject.Find("PaddleLeft");
+        Destroy(paddleObject1);
+        Destroy(paddleObject2);
+        Destroy(gameBall);
+
+        uiManager.GameEnd(winner);
+    }
+
+    public void Test()
+    {
+        UnityEngine.Debug.Log("Working Game Manager");
     }
 }
