@@ -6,6 +6,7 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
     float cameraSpeed;
+    int cameraSpeedCounter = 0;
 
     float pos;
     bool moveUp = false;
@@ -18,6 +19,8 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
+
+
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
@@ -52,12 +55,18 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
+        if (cameraSpeedCounter == cameraSpeed)
+        {
+            cameraSpeedCounter = 0;
+        }
+
         if (moveUp == true)
         {
             pongBall.ChangePosition(true, 0);
             pos += GameManager.screenSize.y / cameraSpeed;
             transform.position = new Vector3(0, pos, -1);
-            if (transform.position == new Vector3(0, GameManager.screenSize.y, -1))
+            cameraSpeedCounter++;
+            if (cameraSpeedCounter == cameraSpeed)
             {
                 moveUp = false;
                 pongBall.ChangePosition(false, 2);
@@ -71,7 +80,8 @@ public class CameraMovement : MonoBehaviour
             pongBall.ChangePosition(true, 0);
             pos -= GameManager.screenSize.y / cameraSpeed;
             transform.position = new Vector3(0, pos, -1);
-            if (transform.position == new Vector3(0, 0 - GameManager.screenSize.y, -1))
+            cameraSpeedCounter++;
+            if (cameraSpeedCounter == cameraSpeed)
             {
                 moveDown = false;
                 pongBall.ChangePosition(false, 1);
@@ -85,10 +95,12 @@ public class CameraMovement : MonoBehaviour
             pongBall.ChangePosition(true, 0);
             pos += GameManager.screenSize.x / cameraSpeed;
             transform.position = new Vector3(pos, 0, -1);
-            if (transform.position == new Vector3(GameManager.screenSize.x, 0, -1))
+            cameraSpeedCounter++;
+            if (cameraSpeedCounter == cameraSpeed)
             {
                 moveRight = false;
                 pongBall.ChangePosition(false, 4);
+                pongBall.DirectionUpdate(1);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();
@@ -99,10 +111,12 @@ public class CameraMovement : MonoBehaviour
             pongBall.ChangePosition(true, 0);
             pos -= GameManager.screenSize.x / cameraSpeed;
             transform.position = new Vector3(pos, 0, -1);
-            if (transform.position == new Vector3(0 - GameManager.screenSize.x, 0, -1))
+            cameraSpeedCounter++;
+            if (cameraSpeedCounter == cameraSpeed)
             {
                 moveLeft = false;
                 pongBall.ChangePosition(false, 3);
+                pongBall.DirectionUpdate(-1);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();

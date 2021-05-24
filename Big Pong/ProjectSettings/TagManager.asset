@@ -12,6 +12,8 @@ TagManager:
   - Horizontal Collider
   - Vertical Collider
   - Scene Clone
+  - UIScore
+  - UIManager
   layers:
   - Default
   - TransparentFX

@@ -12,19 +12,23 @@ public class Paddle : MonoBehaviour
     public bool isRightPaddle;
 
     Ball ball;
+    SpriteRenderer spriteRenderer;
 
     // Use this for initialization
     void Start()
     {
         ball = GameObject.Find("Ball").GetComponent<Ball>();
-
+        
         height = transform.localScale.y;
     }
 
-    public void Init(bool RightPaddle, bool Copy)
+    public void Init(bool rightPaddle, bool copy, string paddleColorChoice)
     {
-        isRightPaddle = RightPaddle;
-        bool isCopy = Copy;
+        isRightPaddle = rightPaddle;
+        bool isCopy = copy;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        string paddleColor = paddleColorChoice;
 
         Vector2 pos = Vector2.zero;
 
@@ -58,9 +62,32 @@ public class Paddle : MonoBehaviour
         }
 
         transform.name = input;
+
+        if (paddleColor == "white")
+        {
+            spriteRenderer.color = Color.white;
+        }
+
+        else if (paddleColor == "red")
+        {
+            spriteRenderer.color = Color.red;
+        }
     }
 
-    // Update is called once per fram
+    public void ColorChange(string colorChoice)
+    {
+        if (colorChoice == "white")
+        {
+            spriteRenderer.color = Color.white;
+        }
+
+        else if (colorChoice == "red")
+        {
+            spriteRenderer.color = Color.red;
+        }
+    }
+
+    // Update is called once per frame
     void Update()
     {
         bool isScreenPaused = ball.IsScreenPaused();
