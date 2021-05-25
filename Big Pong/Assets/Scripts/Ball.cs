@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -7,7 +5,6 @@ public class Ball : MonoBehaviour
     [SerializeField]
     float speed;
 
-    float radius;
     Vector2 direction;
     public bool screenPause = false;
     bool isVerticalShift = false;
@@ -16,9 +13,6 @@ public class Ball : MonoBehaviour
     GameManager gameManager;
     CameraMovement cameraMove;
     ScoreMovement scoreMovement;
-
-    Vector2 topRight;
-    Vector2 bottomLeft;
 
     int stagePosition = 3;
 
@@ -40,7 +34,6 @@ public class Ball : MonoBehaviour
         }
 
         direction = new Vector2(startDirectionX, startDirectionY);
-        radius = transform.localScale.x / 2; // half of the width
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         cameraMove = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>();
@@ -54,13 +47,13 @@ public class Ball : MonoBehaviour
     {
         if (screenPause == false)
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(direction * speed * Time.deltaTime * 1.5f);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Paddle" && screenPause == false)
+        if (other.CompareTag("Paddle") && screenPause == false)
         {
             bool isRightPaddle = other.GetComponent<Paddle>().isRightPaddle;
 
@@ -68,16 +61,16 @@ public class Ball : MonoBehaviour
             if (isRightPaddle == true && direction.x > 0)
             {
                 direction.x = -direction.x;
-                speed = speed + 0.1f;
+                speed += 1.0f;
             }
             // If hitting left paddle and moving left, flip direction
             else if (isRightPaddle == false && direction.x < 0)
             {
                 direction.x = -direction.x;
-                speed = speed + 0.1f;
+                speed += 1.0f;
             }
         }
-        else if (other.tag == "Vertical Barrier")
+        else if (other.CompareTag("Vertical Barrier"))
         {
             
             bool isTopBarrier = other.GetComponent<TopBarrier>().isTopBarrier;
@@ -94,7 +87,7 @@ public class Ball : MonoBehaviour
                 gameManager.BottomBarriers();
             }
         }
-        else if (other.tag == "Side Barrier")
+        else if (other.CompareTag("Side Barrier"))
         {
             bool isRightBarrier = other.GetComponent<SideBarrier>().isRightBarrier;
 
@@ -120,7 +113,7 @@ public class Ball : MonoBehaviour
 
             else if (isRightBarrier == false && isHorizontalShift == false)
             {
-                UnityEngine.Debug.Log("Left shift");
+                Debug.Log("Left shift");
                 isHorizontalShift = true;
                 stagePosition--;
                 if (stagePosition == 0)
@@ -139,20 +132,19 @@ public class Ball : MonoBehaviour
                 }
             }
         }
-        else if (other.tag == "Vertical Collider")
+        else if (other.CompareTag("Vertical Collider"))
         {
             isVerticalShift = false;
         }
-        else if (other.tag == "Horizontal Collider")
+        else if (other.CompareTag("Horizontal Collider"))
         {
             isHorizontalShift = false;
         }
     }
 
-    public void ChangePosition(bool condition, int location)
+    public void ChangePosition(bool screenPause, int location)
     {
-        screenPause = condition;
-        if (screenPause == false)
+        if (!screenPause)
         {
             if (location == 1) // Top
             {
