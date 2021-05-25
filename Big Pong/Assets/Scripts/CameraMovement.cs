@@ -70,6 +70,7 @@ public class CameraMovement : MonoBehaviour
             {
                 moveUp = false;
                 pongBall.ChangePosition(false, 2);
+                pongBall.DirectionUpdate(0, 1);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();
@@ -85,6 +86,7 @@ public class CameraMovement : MonoBehaviour
             {
                 moveDown = false;
                 pongBall.ChangePosition(false, 1);
+                pongBall.DirectionUpdate(0, -1);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();
@@ -100,7 +102,7 @@ public class CameraMovement : MonoBehaviour
             {
                 moveRight = false;
                 pongBall.ChangePosition(false, 4);
-                pongBall.DirectionUpdate(1);
+                pongBall.DirectionUpdate(1, 0);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();
@@ -116,7 +118,7 @@ public class CameraMovement : MonoBehaviour
             {
                 moveLeft = false;
                 pongBall.ChangePosition(false, 3);
-                pongBall.DirectionUpdate(-1);
+                pongBall.DirectionUpdate(-1, 0);
                 transform.position = new Vector3(0, 0, -1);
 
                 gameManager.DestroyBarriers();
