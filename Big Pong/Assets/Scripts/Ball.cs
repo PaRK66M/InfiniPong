@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField]
-    float speed;
+    [SerializeField] float speed;
+    [SerializeField] float speedIncrease;
 
     float radius;
     Vector2 direction;
@@ -68,13 +68,13 @@ public class Ball : MonoBehaviour
             if (isRightPaddle == true && direction.x > 0)
             {
                 direction.x = -direction.x;
-                speed = speed + 0.1f;
+                speed = speed + speedIncrease;
             }
             // If hitting left paddle and moving left, flip direction
             else if (isRightPaddle == false && direction.x < 0)
             {
                 direction.x = -direction.x;
-                speed = speed + 0.1f;
+                speed = speed + speedIncrease;
             }
         }
         else if (other.tag == "Vertical Barrier")
@@ -178,8 +178,15 @@ public class Ball : MonoBehaviour
         return screenPause;
     }
 
-    public void DirectionUpdate(float xDir) 
+    public void DirectionUpdate(float xDir, float yDir) 
     {
-        direction.x = xDir;
+        if (xDir != 0)
+        {
+            direction.x = xDir;
+        }
+        if (yDir != 0)
+        {
+            direction.y = yDir;
+        }
     }
 }
